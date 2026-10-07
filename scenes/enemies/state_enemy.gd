@@ -14,8 +14,14 @@ func _ready() -> void:
 	state_machine.setup(self)
 
 
-func _activate(enemy_data: EnemyData, at: Vector2, target_node: Node2D) -> void:
-	super(enemy_data, at, target_node)
+func _activate(
+	enemy_data: EnemyData,
+	at: Vector2,
+	target_node: Node2D,
+	hp_multiplier: float,
+	damage_multiplier_value: float,
+) -> void:
+	super(enemy_data, at, target_node, hp_multiplier, damage_multiplier_value)
 	state_machine.start()
 
 

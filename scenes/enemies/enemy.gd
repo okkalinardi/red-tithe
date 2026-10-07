@@ -36,6 +36,8 @@ static var _positions_frame: int = -1
 var data: EnemyData
 ## What the enemy walks towards. Usually the player.
 var target: Node2D
+## Applied to every damage this enemy deals. Set when it is spawned.
+var damage_multiplier: float = 1.0
 
 var _is_active: bool = false
 var _separation: Vector2 = Vector2.ZERO
@@ -52,12 +54,19 @@ var _animation: StringName = &""
 
 
 ## Takes an enemy from the pool and places it. Returns null if the pool of
-## that enemy's scene is at its limit.
-static func spawn(enemy_data: EnemyData, at: Vector2, target_node: Node2D) -> Enemy:
+## that enemy's scene is at its limit. The multipliers make this one enemy
+## tougher than its data says; waves use them to scale difficulty.
+static func spawn(
+	enemy_data: EnemyData,
+	at: Vector2,
+	target_node: Node2D,
+	hp_multiplier: float = 1.0,
+	damage_multiplier_value: float = 1.0,
+) -> Enemy:
 	var enemy: Enemy = Pools.acquire(enemy_data.scene) as Enemy
 	if enemy == null:
 		return null
-	enemy._activate(enemy_data, at, target_node)
+	enemy._activate(enemy_data, at, target_node, hp_multiplier, damage_multiplier_value)
 	return enemy
 
 
@@ -137,25 +146,33 @@ func set_tint(color: Color) -> void:
 	_sprite.modulate = color
 
 
-## Changes the damage of a touch, for example during a charge.
+## Changes the damage of a touch, for example during a charge. Pass the
+## value from the data; [member damage_multiplier] is applied here.
 func set_contact_damage(amount: float) -> void:
-	_hitbox.damage = amount
+	_hitbox.damage = amount * damage_multiplier
 
 
-func _activate(enemy_data: EnemyData, at: Vector2, target_node: Node2D) -> void:
+func _activate(
+	enemy_data: EnemyData,
+	at: Vector2,
+	target_node: Node2D,
+	hp_multiplier: float,
+	damage_multiplier_value: float,
+) -> void:
 	data = enemy_data
 	target = target_node
+	damage_multiplier = damage_multiplier_value
 	global_position = at
 	velocity = Vector2.ZERO
 	_separation = Vector2.ZERO
 	_spawn_counter += 1
 	_stagger = _spawn_counter
 
-	health.configure(data.max_hp)
+	health.configure(maxi(roundi(data.max_hp * hp_multiplier), 1))
 	(_body_shape.shape as CircleShape2D).radius = data.body_radius
 	(_hurtbox_shape.shape as CircleShape2D).radius = data.hurtbox_radius
 	(_hitbox_shape.shape as CircleShape2D).radius = data.contact_radius
-	_hitbox.damage = data.contact_damage
+	set_contact_damage(data.contact_damage)
 	_hitbox.hit_interval = data.contact_interval
 	_hitbox.reset()
 

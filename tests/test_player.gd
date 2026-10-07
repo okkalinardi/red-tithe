@@ -17,7 +17,7 @@ func _ready() -> void:
 	var main: Node = _MAIN_SCENE.instantiate()
 	add_child(main)
 	# Enemies would get in the way of a movement test.
-	var spawner: Node = main.get_node_or_null("DebugEnemySpawner")
+	var spawner: Node = main.get_node_or_null("WaveSpawner")
 	if spawner != null:
 		spawner.process_mode = Node.PROCESS_MODE_DISABLED
 	_player = get_tree().get_first_node_in_group(&"player") as Player

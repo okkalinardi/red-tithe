@@ -43,6 +43,11 @@ func end_run() -> void:
 	set_process(false)
 
 
+func set_wave(number: int) -> void:
+	wave = clampi(number, 0, TOTAL_WAVES)
+	wave_changed.emit(wave)
+
+
 func advance_wave() -> void:
 	wave = mini(wave + 1, TOTAL_WAVES)
 	wave_changed.emit(wave)

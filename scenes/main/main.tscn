@@ -1,12 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://bwfwd71y457wl"]
+[gd_scene load_steps=16 format=3 uid="uid://bwfwd71y457wl"]
 
 [ext_resource type="Script" uid="uid://bk3jwfmiu4gfj" path="res://scenes/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/arena/arena.tscn" id="2_arena"]
 [ext_resource type="PackedScene" uid="uid://dt6mumqktufpr" path="res://scenes/player/player.tscn" id="3_player"]
-[ext_resource type="Script" uid="uid://i7x7k8g0bw8f" path="res://scenes/main/debug_enemy_spawner.gd" id="4_debug_spawner"]
-[ext_resource type="Resource" uid="uid://m2xavikjsr5y" path="res://data/enemies/gutter_rat.tres" id="5_gutter_rat"]
-[ext_resource type="Script" uid="uid://chyadgodyof1k" path="res://scripts/resources/enemy_data.gd" id="6_enemy_data"]
-[ext_resource type="Resource" path="res://data/enemies/stray.tres" id="7_stray"]
+[ext_resource type="Script" uid="uid://wuxkep2ukw5l" path="res://scripts/systems/wave_spawner.gd" id="10_spawner"]
+[ext_resource type="Script" uid="uid://cftdxntmseuua" path="res://scripts/resources/wave_data.gd" id="11_wave_data"]
+[ext_resource type="Resource" path="res://data/waves/wave_01.tres" id="wave_01"]
+[ext_resource type="Resource" path="res://data/waves/wave_02.tres" id="wave_02"]
+[ext_resource type="Resource" path="res://data/waves/wave_03.tres" id="wave_03"]
+[ext_resource type="Resource" path="res://data/waves/wave_04.tres" id="wave_04"]
+[ext_resource type="Resource" path="res://data/waves/wave_05.tres" id="wave_05"]
+[ext_resource type="Resource" path="res://data/waves/wave_06.tres" id="wave_06"]
+[ext_resource type="Resource" path="res://data/waves/wave_07.tres" id="wave_07"]
+[ext_resource type="Resource" path="res://data/waves/wave_08.tres" id="wave_08"]
+[ext_resource type="Resource" path="res://data/waves/wave_09.tres" id="wave_09"]
+[ext_resource type="Resource" path="res://data/waves/wave_10.tres" id="wave_10"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -15,6 +23,6 @@ script = ExtResource("1_main")
 
 [node name="Player" parent="." instance=ExtResource("3_player")]
 
-[node name="DebugEnemySpawner" type="Node" parent="."]
-script = ExtResource("4_debug_spawner")
-enemies = Array[ExtResource("6_enemy_data")]([ExtResource("5_gutter_rat"), ExtResource("5_gutter_rat"), ExtResource("5_gutter_rat"), ExtResource("7_stray")])
+[node name="WaveSpawner" type="Node" parent="."]
+script = ExtResource("10_spawner")
+waves = Array[ExtResource("11_wave_data")]([ExtResource("wave_01"), ExtResource("wave_02"), ExtResource("wave_03"), ExtResource("wave_04"), ExtResource("wave_05"), ExtResource("wave_06"), ExtResource("wave_07"), ExtResource("wave_08"), ExtResource("wave_09"), ExtResource("wave_10")])

@@ -10,8 +10,9 @@ extends CharacterBody2D
 ## rat.despawn()          # remove without rewards
 ## Enemy.despawn_all()    # clear the arena
 ## [/codeblock]
-## An enemy with a different behaviour extends this script, overrides
-## [method _get_desired_velocity], and has its own scene named in its data.
+## An enemy with a different behaviour uses [StateEnemy], which runs a state
+## machine, or extends this script and overrides
+## [method _get_desired_velocity]. Either way its scene is named in its data.
 
 const _WALK_DOWN: StringName = &"walk_down"
 const _WALK_UP: StringName = &"walk_up"
@@ -113,6 +114,34 @@ func get_separation_velocity() -> Vector2:
 	return _separation * data.move_speed * data.separation_strength
 
 
+## Plays an animation if the enemy's frames have it. Does nothing when it is
+## already the current one, which is the case on almost every frame.
+func play_animation(animation: StringName) -> void:
+	if animation == _animation:
+		return
+	_animation = animation
+	if _sprite.sprite_frames != null and _sprite.sprite_frames.has_animation(animation):
+		_sprite.play(animation)
+
+
+## Mirrors a side-view sprite so it looks along [param direction]. Only for
+## sheets with one side view; four-direction sheets use walk_* animations.
+func face_direction(direction: Vector2) -> void:
+	if is_zero_approx(direction.x):
+		return
+	_sprite.flip_h = (direction.x > 0.0) == data.sprite_faces_left
+
+
+## Tints the sprite. [constant Color.WHITE] removes the tint.
+func set_tint(color: Color) -> void:
+	_sprite.modulate = color
+
+
+## Changes the damage of a touch, for example during a charge.
+func set_contact_damage(amount: float) -> void:
+	_hitbox.damage = amount
+
+
 func _activate(enemy_data: EnemyData, at: Vector2, target_node: Node2D) -> void:
 	data = enemy_data
 	target = target_node
@@ -133,8 +162,10 @@ func _activate(enemy_data: EnemyData, at: Vector2, target_node: Node2D) -> void:
 	_sprite.sprite_frames = data.sprite_frames
 	_sprite.scale = Vector2.ONE * data.visual_scale
 	_sprite.offset = data.sprite_offset
+	_sprite.flip_h = false
+	_sprite.modulate = Color.WHITE
 	_animation = &""
-	_play(_WALK_DOWN)
+	play_animation(_WALK_DOWN)
 
 	active.append(self)
 	_is_active = true
@@ -181,19 +212,9 @@ func _update_animation() -> void:
 	if velocity.length_squared() < 1.0:
 		return
 	if absf(velocity.x) > absf(velocity.y):
-		_play(_WALK_RIGHT if velocity.x > 0.0 else _WALK_LEFT)
+		play_animation(_WALK_RIGHT if velocity.x > 0.0 else _WALK_LEFT)
 	else:
-		_play(_WALK_DOWN if velocity.y > 0.0 else _WALK_UP)
-
-
-# Plays an animation if the enemy's frames have it. Does nothing when it is
-# already the current one, which is the case on almost every frame.
-func _play(animation: StringName) -> void:
-	if animation == _animation:
-		return
-	_animation = animation
-	if _sprite.sprite_frames != null and _sprite.sprite_frames.has_animation(animation):
-		_sprite.play(animation)
+		play_animation(_WALK_DOWN if velocity.y > 0.0 else _WALK_UP)
 
 
 func _on_died() -> void:

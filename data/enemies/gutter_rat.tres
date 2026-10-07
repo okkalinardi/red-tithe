@@ -143,3 +143,4 @@ stop_distance = 4.0
 sprite_frames = SubResource("SpriteFrames_rat")
 visual_scale = 0.5
 sprite_offset = Vector2(0, -12)
+sprite_faces_left = false

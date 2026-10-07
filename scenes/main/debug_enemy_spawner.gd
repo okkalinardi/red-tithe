@@ -3,7 +3,8 @@ extends Node
 ## wave spawner exists. Delete this node and this file when the wave spawner
 ## task is done.
 
-@export var enemy_data: EnemyData
+## One is picked at random for each spawn. List a kind twice to see it more.
+@export var enemies: Array[EnemyData] = []
 ## Seconds between batches.
 @export var interval: float = 1.5
 @export var batch_size: int = 3
@@ -25,7 +26,7 @@ func setup(player: Node2D, bounds: Rect2i) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if enemy_data == null or _player == null:
+	if enemies.is_empty() or _player == null:
 		return
 	_time_left -= delta
 	if _time_left > 0.0:
@@ -36,4 +37,4 @@ func _physics_process(delta: float) -> void:
 			return
 		var offset: Vector2 = Vector2.from_angle(randf() * TAU) * spawn_distance
 		var at: Vector2 = (_player.global_position + offset).clamp(_bounds.position, _bounds.end)
-		Enemy.spawn(enemy_data, at, _player)
+		Enemy.spawn(enemies.pick_random(), at, _player)

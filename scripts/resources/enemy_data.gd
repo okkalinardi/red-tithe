@@ -48,3 +48,6 @@ extends Resource
 @export var visual_scale: float = 1.0
 ## Moves the sprite so the body sits on the enemy's position. In sprite pixels.
 @export var sprite_offset: Vector2 = Vector2.ZERO
+## Tick this for a sheet that only has a side view drawn facing left. The
+## sprite is then mirrored to face right.
+@export var sprite_faces_left: bool = false

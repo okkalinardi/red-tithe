@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/projectiles/projectile.gd" id="1_projectile"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_arrow"]
+radius = 2.0
+
+[node name="Arrow" type="Area2D"]
+collision_layer = 8
+collision_mask = 5
+script = ExtResource("1_projectile")
+
+[node name="Visual" type="Polygon2D" parent="."]
+color = Color(0.86, 0.14, 0.18, 1)
+polygon = PackedVector2Array(-5, -1, 2, -1, 2, -2.5, 6, 0, 2, 2.5, 2, 1, -5, 1)
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(3, 0)
+shape = SubResource("CircleShape2D_arrow")

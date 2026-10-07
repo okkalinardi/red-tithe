@@ -29,6 +29,10 @@ const MAX_TIER: int = 10
 @export_range(0.0, 1.0, 0.05) var strength_weight: float = 1.0
 @export_range(0.0, 1.0, 0.05) var dexterity_weight: float = 0.0
 
+@export_group("Targets")
+## Physics layers this weapon can hit.
+@export_flags_2d_physics var hit_mask: int = PhysicsLayers.ENEMY
+
 @export_group("Tier scaling")
 ## Extra damage per tier above 1. 0.2 = +20% of base damage per tier.
 @export var damage_growth_per_tier: float = 0.2

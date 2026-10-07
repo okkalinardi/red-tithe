@@ -232,9 +232,10 @@ func _test_player_wiring() -> void:
 	var player: Player = _PLAYER_SCENE.instantiate() as Player
 	add_child(player)
 	await get_tree().physics_frame
-	_check("player starts with no weapon", float(player.weapons.get_weapon(0) == null), 1.0)
-	_check("player accepts a weapon", float(player.weapons.add_weapon(_new_data(&"sword", 10.0, 0.1))), 1.0)
-	var weapon: Weapon = player.weapons.get_weapon(0)
+	# Whatever the player starts with is replaced by a plain test weapon.
+	var weapon: Weapon = player.weapons.equip(0, _new_data(&"test", 10.0, 0.1))
+	player.weapons.unequip(1)
+	_check("player accepts a weapon", float(player.weapons.get_weapon(0) == weapon), 1.0)
 	player.stats.strength = 50
 	_check("weapon uses the player's stats", weapon.get_damage(), 20.0)
 	_attack_count = 0

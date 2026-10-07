@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MeleeWeaponData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/melee_weapon_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/melee_weapon.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"sword"
+display_name = "Sword"
+weapon_scene = ExtResource("2_scene")
+base_damage = 12.0
+base_cooldown = 0.7
+base_range = 28.0
+strength_weight = 1.0
+dexterity_weight = 0.0
+arc_degrees = 120.0

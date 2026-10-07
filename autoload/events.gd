@@ -19,6 +19,10 @@ signal shop_opened
 signal shop_closed
 @warning_ignore("unused_signal")
 signal player_died
+## Emitted when an enemy is killed (not when it is despawned). The enemy node
+## is pooled and may be reused at once, so only its data and position are sent.
+@warning_ignore("unused_signal")
+signal enemy_died(data: EnemyData, position: Vector2)
 @warning_ignore("unused_signal")
 signal boss_defeated
 @warning_ignore("unused_signal")

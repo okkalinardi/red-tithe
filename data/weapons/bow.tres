@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ProjectileWeaponData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/projectile_weapon_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/projectile_weapon.tscn" id="2_scene"]
+[ext_resource type="PackedScene" path="res://scenes/projectiles/arrow.tscn" id="3_arrow"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"bow"
+display_name = "Bow"
+weapon_scene = ExtResource("2_scene")
+base_damage = 8.0
+base_cooldown = 0.5
+base_range = 160.0
+strength_weight = 0.0
+dexterity_weight = 1.0
+projectile_scene = ExtResource("3_arrow")
+projectile_speed = 260.0

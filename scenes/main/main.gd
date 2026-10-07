@@ -3,9 +3,13 @@ extends Node2D
 
 @onready var _arena: Arena = $Arena
 @onready var _player: Player = $Player
+# Temporary, until the wave spawner exists.
+@onready var _debug_spawner: Node = get_node_or_null("DebugEnemySpawner")
 
 
 func _ready() -> void:
 	var bounds: Rect2i = _arena.get_bounds()
 	_player.global_position = Vector2(bounds.get_center())
 	_player.set_camera_limits(bounds)
+	if _debug_spawner != null:
+		_debug_spawner.call(&"setup", _player, bounds)

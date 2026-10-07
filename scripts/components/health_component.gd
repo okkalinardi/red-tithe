@@ -61,6 +61,7 @@ func _ready() -> void:
 		max_hp = base_max_hp
 		current_hp = max_hp
 		_report_health(true)
+	_update_processing()
 
 
 func _exit_tree() -> void:
@@ -73,12 +74,14 @@ func _physics_process(delta: float) -> void:
 		if _flash_left <= 0.0:
 			_end_flash()
 	if _is_dead:
+		_update_processing()
 		return
 	if _invincibility_left > 0.0:
 		_invincibility_left -= delta
-	var regen: float = _stats.hp_regen if _stats != null else base_hp_regen
+	var regen: float = _get_regen()
 	if regen > 0.0 and current_hp < max_hp:
 		_set_hp(current_hp + regen * delta)
+	_update_processing()
 
 
 ## Makes Max HP, regen and defense follow [param stats], and fills HP.
@@ -90,6 +93,7 @@ func bind_stats(stats: StatBlock) -> void:
 	max_hp = _stats.max_hp
 	current_hp = max_hp
 	_report_health(true)
+	_update_processing()
 
 
 ## Applies an enemy hit of [param raw_damage] and returns the damage dealt
@@ -109,6 +113,7 @@ func take_damage(raw_damage: float) -> int:
 	_start_flash()
 	_set_hp(remaining)
 	damaged.emit(dealt)
+	_update_processing()
 	if current_hp <= 0.0:
 		_is_dead = true
 		died.emit()
@@ -127,6 +132,7 @@ func spend_hp(cost: float) -> bool:
 		return false
 	if cost > 0.0:
 		_set_hp(current_hp - cost)
+		_update_processing()
 	return true
 
 
@@ -139,12 +145,24 @@ func heal(amount: float) -> float:
 	return current_hp - before
 
 
+## Sets Max HP and regen for a character without a StatBlock, and fills HP.
+## Pooled enemies call this every time they are spawned.
+func configure(new_max_hp: int, hp_regen: float = 0.0) -> void:
+	base_max_hp = new_max_hp
+	base_hp_regen = hp_regen
+	if _stats == null:
+		max_hp = base_max_hp
+	restore_full()
+	_report_health(true)
+
+
 ## Back to full HP and alive. For the start of a run.
 func restore_full() -> void:
 	_is_dead = false
 	_invincibility_left = 0.0
 	_end_flash()
 	_set_hp(max_hp)
+	_update_processing()
 
 
 func is_alive() -> bool:
@@ -158,6 +176,17 @@ func is_invincible() -> bool:
 ## 0.0 to 1.0, for HP bars.
 func get_hp_ratio() -> float:
 	return current_hp / max_hp if max_hp > 0 else 0.0
+
+
+func _get_regen() -> float:
+	return _stats.hp_regen if _stats != null else base_hp_regen
+
+
+# A health node with nothing to count down or regenerate does no per-frame
+# work. This matters with 100 enemies alive.
+func _update_processing() -> void:
+	var is_regenerating: bool = not _is_dead and current_hp < max_hp and _get_regen() > 0.0
+	set_physics_process(_is_flashing or _invincibility_left > 0.0 or is_regenerating)
 
 
 func _set_hp(value: float) -> void:
@@ -181,6 +210,7 @@ func _on_stats_changed() -> void:
 	max_hp = _stats.max_hp
 	current_hp = minf(current_hp, max_hp)
 	_report_health(true)
+	_update_processing()
 
 
 func _start_flash() -> void:

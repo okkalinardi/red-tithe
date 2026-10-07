@@ -1,11 +1,15 @@
-[gd_scene load_steps=30 format=3 uid="uid://dt6mumqktufpr"]
+[gd_scene load_steps=35 format=3 uid="uid://dt6mumqktufpr"]
 
 [ext_resource type="Script" uid="uid://dhoxv833huefc" path="res://scenes/player/player.gd" id="1_player"]
 [ext_resource type="Texture2D" uid="uid://bv1kekhvybf8l" path="res://assets/sprites/player/Idle.png" id="2_idle"]
 [ext_resource type="Texture2D" uid="uid://uuejeoak7sf5" path="res://assets/sprites/player/Walk.png" id="3_walk"]
 [ext_resource type="Texture2D" uid="uid://7kueddjbyh6c" path="res://assets/sprites/player/Dead.png" id="4_dead"]
-[ext_resource type="Script" path="res://scripts/components/health_component.gd" id="5_health"]
-[ext_resource type="Script" path="res://scenes/weapons/weapon_holder.gd" id="6_weapons"]
+[ext_resource type="Script" uid="uid://b5dlsrq2xupad" path="res://scripts/components/health_component.gd" id="5_health"]
+[ext_resource type="Script" uid="uid://dmtgaq5xepsdo" path="res://scenes/weapons/weapon_holder.gd" id="6_weapons"]
+[ext_resource type="Script" uid="uid://6ebw1otls112" path="res://scripts/resources/weapon_data.gd" id="7_weapon_data"]
+[ext_resource type="Resource" path="res://data/weapons/sword.tres" id="8_sword"]
+[ext_resource type="Resource" path="res://data/weapons/bow.tres" id="9_bow"]
+[ext_resource type="Script" uid="uid://d3q4eu0al81ju" path="res://scripts/components/hurtbox_component.gd" id="10_hurtbox"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dead"]
 atlas = ExtResource("4_dead")
@@ -205,6 +209,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 5.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
+radius = 4.0
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
 motion_mode = 1
@@ -233,3 +240,14 @@ flash_target = NodePath("../Sprite")
 
 [node name="Weapons" type="Node2D" parent="."]
 script = ExtResource("6_weapons")
+starting_weapons = Array[ExtResource("7_weapon_data")]([ExtResource("8_sword"), ExtResource("9_bow")])
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("health")]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("10_hurtbox")
+health = NodePath("../Health")
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CircleShape2D_hurtbox")

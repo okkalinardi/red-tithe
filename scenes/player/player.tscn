@@ -1,10 +1,11 @@
-[gd_scene load_steps=29 format=3 uid="uid://dt6mumqktufpr"]
+[gd_scene load_steps=30 format=3 uid="uid://dt6mumqktufpr"]
 
 [ext_resource type="Script" uid="uid://dhoxv833huefc" path="res://scenes/player/player.gd" id="1_player"]
 [ext_resource type="Texture2D" uid="uid://bv1kekhvybf8l" path="res://assets/sprites/player/Idle.png" id="2_idle"]
 [ext_resource type="Texture2D" uid="uid://uuejeoak7sf5" path="res://assets/sprites/player/Walk.png" id="3_walk"]
 [ext_resource type="Texture2D" uid="uid://7kueddjbyh6c" path="res://assets/sprites/player/Dead.png" id="4_dead"]
 [ext_resource type="Script" path="res://scripts/components/health_component.gd" id="5_health"]
+[ext_resource type="Script" path="res://scenes/weapons/weapon_holder.gd" id="6_weapons"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dead"]
 atlas = ExtResource("4_dead")
@@ -229,3 +230,6 @@ process_callback = 0
 script = ExtResource("5_health")
 invincibility_time = 0.5
 flash_target = NodePath("../Sprite")
+
+[node name="Weapons" type="Node2D" parent="."]
+script = ExtResource("6_weapons")

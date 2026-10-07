@@ -23,6 +23,7 @@ var aim_direction: Vector2 = Vector2.RIGHT
 var facing: Facing = Facing.DOWN
 
 @onready var health: HealthComponent = $Health
+@onready var weapons: WeaponHolder = $Weapons
 @onready var _sprite: AnimatedSprite2D = $Sprite
 @onready var _aim_pivot: Node2D = $AimPivot
 @onready var _camera: Camera2D = $Camera
@@ -35,6 +36,7 @@ func _ready() -> void:
 		stats = StatBlock.new()
 	health.bind_stats(stats)
 	health.died.connect(_on_died)
+	weapons.setup(stats)
 	_update_animation()
 
 
@@ -57,6 +59,7 @@ func aim_at(target: Vector2) -> void:
 	if to_target.is_zero_approx():
 		return
 	aim_direction = to_target.normalized()
+	weapons.aim_direction = aim_direction
 	_aim_pivot.rotation = aim_direction.angle()
 	if absf(aim_direction.x) > absf(aim_direction.y):
 		facing = Facing.RIGHT if aim_direction.x > 0.0 else Facing.LEFT
@@ -86,5 +89,6 @@ func _on_died() -> void:
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 	set_process(false)
+	weapons.firing_enabled = false
 	_sprite.play(&"dead")
 	Events.player_died.emit()

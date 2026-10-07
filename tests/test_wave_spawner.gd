@@ -381,13 +381,23 @@ func _test_main_scene() -> void:
 	main.get_node("Player/Hurtbox").process_mode = Node.PROCESS_MODE_DISABLED
 	_check("the main scene starts wave 1 by itself", spawner.current_wave_number, 1)
 	_check("the main scene starts the run", float(RunState.is_running), 1.0)
+	var hud_label: Label = main.get_node("DebugHud/Label") as Label
 	await _wait(30)
+	_check("the readout shows the player's hp", float(hud_label.text.contains("HP 100/100")), 1.0)
+	_check("the readout shows the wave", float(hud_label.text.contains("Wave 1/2")), 1.0)
+	_check("the readout shows the wave timer", float(hud_label.text.contains("Time 0.")), 1.0)
 	_check("enemies come for the player", float(Enemy.active.size() > 0 and Enemy.active[0].target == main.get_node("Player")), 1.0)
 	await _wait(45)
 	_check("wave 1 ends in the main scene", float(spawner.is_wave_active()), 0.0)
+	_check("the readout shows the pause between waves", float(hud_label.text.contains("between waves")), 1.0)
 	_check("still on wave 1 during the pause between waves", spawner.current_wave_number, 1)
 	await _wait(200)
 	_check("wave 2 starts after the pause", spawner.current_wave_number, 2)
+	await _wait(2)
+	_check("the readout follows to wave 2", float(hud_label.text.contains("Wave 2/2")), 1.0)
+	(main.get_node("Player") as Player).health.take_damage(30.0)
+	await _wait(2)
+	_check("the readout follows the player's hp", float(hud_label.text.contains("HP 7")), 1.0)
 	# In this test the enemy pools belong to the test scene, not to main, so
 	# they are cleared by hand. In the game they are freed with the scene.
 	main.queue_free()

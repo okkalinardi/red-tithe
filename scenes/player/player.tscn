@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://dt6mumqktufpr"]
+[gd_scene load_steps=37 format=3 uid="uid://dt6mumqktufpr"]
 
 [ext_resource type="Script" uid="uid://dhoxv833huefc" path="res://scenes/player/player.gd" id="1_player"]
 [ext_resource type="Texture2D" uid="uid://bv1kekhvybf8l" path="res://assets/sprites/player/Idle.png" id="2_idle"]
@@ -10,6 +10,8 @@
 [ext_resource type="Resource" path="res://data/weapons/sword.tres" id="8_sword"]
 [ext_resource type="Resource" path="res://data/weapons/bow.tres" id="9_bow"]
 [ext_resource type="Script" uid="uid://d3q4eu0al81ju" path="res://scripts/components/hurtbox_component.gd" id="10_hurtbox"]
+[ext_resource type="Script" path="res://scripts/components/progression_component.gd" id="11_progression"]
+[ext_resource type="Script" path="res://scripts/components/pickup_collector.gd" id="12_collector"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dead"]
 atlas = ExtResource("4_dead")
@@ -251,3 +253,11 @@ health = NodePath("../Health")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("CircleShape2D_hurtbox")
+
+[node name="Progression" type="Node" parent="."]
+script = ExtResource("11_progression")
+
+[node name="PickupCollector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 32
+script = ExtResource("12_collector")

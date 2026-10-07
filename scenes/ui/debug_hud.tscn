@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/debug_hud.gd" id="1_hud"]
+
+[node name="DebugHud" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_hud")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 240.0
+offset_bottom = 80.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 10

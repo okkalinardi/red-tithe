@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PickupData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/pickup_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/pickups/pickup.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"xp_gem"
+kind = 0
+scene = ExtResource("2_scene")
+color = Color(0.9, 0.12, 0.2, 1)

@@ -19,6 +19,9 @@ signal shop_opened
 signal shop_closed
 @warning_ignore("unused_signal")
 signal player_died
+## Emitted once for every level the player gains.
+@warning_ignore("unused_signal")
+signal player_leveled_up(level: int)
 ## Emitted when an enemy is killed (not when it is despawned). The enemy node
 ## is pooled and may be reused at once, so only its data and position are sent.
 @warning_ignore("unused_signal")

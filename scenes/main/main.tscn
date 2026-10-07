@@ -1,20 +1,24 @@
-[gd_scene load_steps=16 format=3 uid="uid://bwfwd71y457wl"]
+[gd_scene load_steps=20 format=3 uid="uid://bwfwd71y457wl"]
 
 [ext_resource type="Script" uid="uid://bk3jwfmiu4gfj" path="res://scenes/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/arena/arena.tscn" id="2_arena"]
 [ext_resource type="PackedScene" uid="uid://dt6mumqktufpr" path="res://scenes/player/player.tscn" id="3_player"]
+[ext_resource type="Script" path="res://scripts/systems/drop_spawner.gd" id="30_drops"]
+[ext_resource type="Resource" path="res://data/pickups/xp_gem.tres" id="31_xp_gem"]
+[ext_resource type="Resource" path="res://data/pickups/gold.tres" id="32_gold"]
 [ext_resource type="Script" uid="uid://wuxkep2ukw5l" path="res://scripts/systems/wave_spawner.gd" id="10_spawner"]
 [ext_resource type="Script" uid="uid://cftdxntmseuua" path="res://scripts/resources/wave_data.gd" id="11_wave_data"]
-[ext_resource type="Resource" path="res://data/waves/wave_01.tres" id="wave_01"]
-[ext_resource type="Resource" path="res://data/waves/wave_02.tres" id="wave_02"]
-[ext_resource type="Resource" path="res://data/waves/wave_03.tres" id="wave_03"]
-[ext_resource type="Resource" path="res://data/waves/wave_04.tres" id="wave_04"]
-[ext_resource type="Resource" path="res://data/waves/wave_05.tres" id="wave_05"]
-[ext_resource type="Resource" path="res://data/waves/wave_06.tres" id="wave_06"]
-[ext_resource type="Resource" path="res://data/waves/wave_07.tres" id="wave_07"]
-[ext_resource type="Resource" path="res://data/waves/wave_08.tres" id="wave_08"]
-[ext_resource type="Resource" path="res://data/waves/wave_09.tres" id="wave_09"]
-[ext_resource type="Resource" path="res://data/waves/wave_10.tres" id="wave_10"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_hud.tscn" id="20_debug_hud"]
+[ext_resource type="Resource" uid="uid://cpv5thvr74075" path="res://data/waves/wave_01.tres" id="wave_01"]
+[ext_resource type="Resource" uid="uid://d0drrorxiy6n5" path="res://data/waves/wave_02.tres" id="wave_02"]
+[ext_resource type="Resource" uid="uid://bg1pwq2rdqvqo" path="res://data/waves/wave_03.tres" id="wave_03"]
+[ext_resource type="Resource" uid="uid://b4ctbtean3moc" path="res://data/waves/wave_04.tres" id="wave_04"]
+[ext_resource type="Resource" uid="uid://b0kex2ng74ktw" path="res://data/waves/wave_05.tres" id="wave_05"]
+[ext_resource type="Resource" uid="uid://bkgm5ryo30n2l" path="res://data/waves/wave_06.tres" id="wave_06"]
+[ext_resource type="Resource" uid="uid://cbfhiufco27n3" path="res://data/waves/wave_07.tres" id="wave_07"]
+[ext_resource type="Resource" uid="uid://ccb5apnik06v6" path="res://data/waves/wave_08.tres" id="wave_08"]
+[ext_resource type="Resource" uid="uid://bumoi25gf2il4" path="res://data/waves/wave_09.tres" id="wave_09"]
+[ext_resource type="Resource" uid="uid://s0dxc0ojua4j" path="res://data/waves/wave_10.tres" id="wave_10"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -26,3 +30,10 @@ script = ExtResource("1_main")
 [node name="WaveSpawner" type="Node" parent="."]
 script = ExtResource("10_spawner")
 waves = Array[ExtResource("11_wave_data")]([ExtResource("wave_01"), ExtResource("wave_02"), ExtResource("wave_03"), ExtResource("wave_04"), ExtResource("wave_05"), ExtResource("wave_06"), ExtResource("wave_07"), ExtResource("wave_08"), ExtResource("wave_09"), ExtResource("wave_10")])
+
+[node name="DebugHud" parent="." instance=ExtResource("20_debug_hud")]
+
+[node name="DropSpawner" type="Node" parent="."]
+script = ExtResource("30_drops")
+xp_pickup = ExtResource("31_xp_gem")
+gold_pickup = ExtResource("32_gold")

@@ -24,6 +24,8 @@ var facing: Facing = Facing.DOWN
 
 @onready var health: HealthComponent = $Health
 @onready var weapons: WeaponHolder = $Weapons
+@onready var progression: ProgressionComponent = $Progression
+@onready var collector: PickupCollector = $PickupCollector
 @onready var _sprite: AnimatedSprite2D = $Sprite
 @onready var _aim_pivot: Node2D = $AimPivot
 @onready var _camera: Camera2D = $Camera
@@ -37,6 +39,8 @@ func _ready() -> void:
 	health.bind_stats(stats)
 	health.died.connect(_on_died)
 	weapons.setup(stats)
+	progression.setup(stats)
+	collector.collected.connect(_on_pickup_collected)
 	_update_animation()
 
 
@@ -90,5 +94,14 @@ func _on_died() -> void:
 	set_physics_process(false)
 	set_process(false)
 	weapons.firing_enabled = false
+	collector.disable()
 	_sprite.play(&"dead")
 	Events.player_died.emit()
+
+
+func _on_pickup_collected(data: PickupData, amount: int) -> void:
+	match data.kind:
+		PickupData.Kind.XP:
+			progression.add_xp(amount)
+		PickupData.Kind.GOLD:
+			RunState.add_gold(amount)

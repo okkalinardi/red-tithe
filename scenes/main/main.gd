@@ -10,6 +10,9 @@ var _intermission_timer: Timer
 @onready var _arena: Arena = $Arena
 @onready var _player: Player = $Player
 @onready var _wave_spawner: WaveSpawner = $WaveSpawner
+@onready var _drop_spawner: DropSpawner = $DropSpawner
+# Temporary, until the real HUD exists.
+@onready var _debug_hud: Node = get_node_or_null("DebugHud")
 
 
 func _ready() -> void:
@@ -25,18 +28,14 @@ func _ready() -> void:
 
 	RunState.start_run()
 	_wave_spawner.setup(_player, bounds)
-	_wave_spawner.wave_started.connect(_on_wave_started)
+	_drop_spawner.setup(_player.collector)
 	_wave_spawner.wave_ended.connect(_on_wave_ended)
 	_wave_spawner.start_next_wave()
+	if _debug_hud != null:
+		_debug_hud.call(&"setup", _player, _wave_spawner)
 
 
-# TEMPORARY, until the HUD shows the wave.
-func _on_wave_started(number: int) -> void:
-	print("Wave %d started" % number)
-
-
-func _on_wave_ended(number: int) -> void:
-	print("Wave %d ended" % number)
+func _on_wave_ended(_number: int) -> void:
 	_intermission_timer.start()
 
 

@@ -18,6 +18,9 @@ signal wave_ended(number: int)
 ## Emitted after [signal wave_ended] of the last wave.
 signal all_waves_completed
 signal enemy_spawned(enemy: Enemy)
+## Emitted when the whole number of seconds left on the wave timer changes,
+## so displays can update once a second instead of polling.
+signal time_left_changed(seconds: int)
 
 ## No setting can raise the number of enemies alive above this.
 const HARD_CAP: int = 100
@@ -50,6 +53,7 @@ var _bounds: Rect2
 var _is_spawn_point_free: Callable
 var _is_active: bool = false
 var _time_left: float = 0.0
+var _last_reported_second: int = -1
 var _spawn_timer: float = 0.0
 
 
@@ -67,6 +71,7 @@ func _physics_process(delta: float) -> void:
 		_spawn_batch()
 	if _wave.is_timed():
 		_time_left -= delta
+		_report_time_left()
 		if _time_left <= 0.0:
 			_end_wave()
 
@@ -96,10 +101,13 @@ func start_wave(number: int) -> bool:
 	_wave = waves[number - 1]
 	current_wave_number = number
 	_time_left = _wave.duration
+	_last_reported_second = -1
 	_spawn_timer = 0.0
 	_is_active = true
 	RunState.set_wave(number)
 	wave_started.emit(number)
+	if _wave.is_timed():
+		_report_time_left()
 	Events.wave_started.emit(number)
 	if _wave.boss != null:
 		_spawn(_wave.boss)
@@ -134,6 +142,13 @@ func is_wave_timed() -> bool:
 
 func get_wave_count() -> int:
 	return waves.size()
+
+
+func _report_time_left() -> void:
+	var seconds: int = ceili(maxf(_time_left, 0.0))
+	if seconds != _last_reported_second:
+		_last_reported_second = seconds
+		time_left_changed.emit(seconds)
 
 
 func _get_alive_limit() -> int:

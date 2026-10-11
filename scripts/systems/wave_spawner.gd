@@ -47,6 +47,7 @@ var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _wave: WaveData
 var _target: Node2D
 var _bounds: Rect2
+var _is_spawn_point_free: Callable
 var _is_active: bool = false
 var _time_left: float = 0.0
 var _spawn_timer: float = 0.0
@@ -73,9 +74,14 @@ func _physics_process(delta: float) -> void:
 ## [param target] is what enemies chase. [param arena_bounds] is the arena
 ## rectangle in world space. Also creates the enemies ahead of time, so
 ## nothing is instantiated in the middle of a wave.
-func setup(target: Node2D, arena_bounds: Rect2i) -> void:
+##
+## [param is_spawn_point_free] is optional: a function that takes a world
+## position and returns false where an enemy must not appear (inside an
+## obstacle). See [method Arena.is_point_free].
+func setup(target: Node2D, arena_bounds: Rect2i, is_spawn_point_free: Callable = Callable()) -> void:
 	_target = target
 	_bounds = Rect2(arena_bounds).grow(-wall_margin)
+	_is_spawn_point_free = is_spawn_point_free
 	_prewarm_pools()
 
 
@@ -165,11 +171,11 @@ func _pick_spawn_position() -> Vector2:
 	var hidden_from: Rect2 = _get_view_rect().grow(view_margin)
 	for attempt: int in _RING_ATTEMPTS:
 		var point: Vector2 = _random_point_in_band(hidden_from)
-		if _bounds.has_point(point):
+		if _bounds.has_point(point) and _is_free(point):
 			return point
 	for attempt: int in _ARENA_ATTEMPTS:
 		var point: Vector2 = _random_point_in(_bounds)
-		if not hidden_from.has_point(point):
+		if not hidden_from.has_point(point) and _is_free(point):
 			return point
 	# The camera shows the whole arena: use the corner furthest from the target.
 	var corners: Array[Vector2] = [
@@ -205,6 +211,10 @@ func _random_point_in_band(inner: Rect2) -> Vector2:
 		if roll < 0.0:
 			return _random_point_in(strip)
 	return _random_point_in(strips[0])
+
+
+func _is_free(point: Vector2) -> bool:
+	return not _is_spawn_point_free.is_valid() or _is_spawn_point_free.call(point)
 
 
 func _random_point_in(rect: Rect2) -> Vector2:

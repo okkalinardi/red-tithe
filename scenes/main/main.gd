@@ -4,6 +4,9 @@ extends Node2D
 # TEMPORARY, until the shop and the run flow exist: the next wave starts by
 # itself after this many seconds.
 const _INTERMISSION: float = 3.0
+# Room kept around a spawn point, in pixels: the largest enemy body radius
+# plus a little.
+const _SPAWN_CLEARANCE: float = 10.0
 
 var _intermission_timer: Timer
 
@@ -27,7 +30,7 @@ func _ready() -> void:
 	add_child(_intermission_timer)
 
 	RunState.start_run()
-	_wave_spawner.setup(_player, bounds)
+	_wave_spawner.setup(_player, bounds, _arena.is_point_free.bind(_SPAWN_CLEARANCE))
 	_drop_spawner.setup(_player.collector)
 	_wave_spawner.wave_ended.connect(_on_wave_ended)
 	_wave_spawner.start_next_wave()

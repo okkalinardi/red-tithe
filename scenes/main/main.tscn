@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bwfwd71y457wl"]
+[gd_scene load_steps=21 format=3 uid="uid://bwfwd71y457wl"]
 
 [ext_resource type="Script" uid="uid://bk3jwfmiu4gfj" path="res://scenes/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/arena/arena.tscn" id="2_arena"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://wuxkep2ukw5l" path="res://scripts/systems/wave_spawner.gd" id="10_spawner"]
 [ext_resource type="Script" uid="uid://cftdxntmseuua" path="res://scripts/resources/wave_data.gd" id="11_wave_data"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="20_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/level_up_screen.tscn" id="21_level_up"]
 [ext_resource type="Script" uid="uid://br0iwrea8svqb" path="res://scripts/systems/drop_spawner.gd" id="30_drops"]
 [ext_resource type="Resource" path="res://data/pickups/xp_gem.tres" id="31_xp_gem"]
 [ext_resource type="Resource" path="res://data/pickups/gold.tres" id="32_gold"]
@@ -37,3 +38,5 @@ waves = Array[ExtResource("11_wave_data")]([ExtResource("wave_01"), ExtResource(
 script = ExtResource("30_drops")
 xp_pickup = ExtResource("31_xp_gem")
 gold_pickup = ExtResource("32_gold")
+
+[node name="LevelUpScreen" parent="." instance=ExtResource("21_level_up")]

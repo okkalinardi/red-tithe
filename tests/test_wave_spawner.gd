@@ -377,8 +377,10 @@ func _test_main_scene() -> void:
 	var spawner: WaveSpawner = main.get_node("WaveSpawner") as WaveSpawner
 	spawner.waves = [_new_wave(1.0, 0.2, 2), _new_wave(1.0, 0.2, 2, [_RAT, _STRAY])]
 	add_child(main)
-	# Nobody is playing, so make sure the player survives.
+	# Nobody is playing, so make sure the player survives. Holding fire keeps
+	# the player from levelling up, which would open the level-up screen.
 	main.get_node("Player/Hurtbox").process_mode = Node.PROCESS_MODE_DISABLED
+	(main.get_node("Player") as Player).weapons.firing_enabled = false
 	_check("the main scene starts wave 1 by itself", spawner.current_wave_number, 1)
 	_check("the main scene starts the run", float(RunState.is_running), 1.0)
 	var hud: Node = main.get_node("Hud")

@@ -6,14 +6,16 @@ extends Object
 ## var arrow := Pools.acquire(arrow_scene)   # instead of instantiate()
 ## Pools.release(arrow)                      # instead of queue_free()
 ## [/codeblock]
-## The pools live under a "Pools" node inside the current scene, so they are
-## drawn with the game world and are freed when the scene changes.
+## The pools live under a "Pools" node inside the host (the gameplay scene
+## calls [method set_host] with itself), so they are drawn with the game
+## world and are freed with it. Without a host, the current scene is used.
 
 const _POOL_META: StringName = &"object_pool"
 const _CONTAINER_NAME: String = "Pools"
 
 static var _pools: Dictionary[PackedScene, ObjectPool] = {}
 static var _container: Node
+static var _host: Node
 
 
 ## Creates [param count] instances ahead of time, so nothing is instantiated
@@ -41,6 +43,21 @@ static func release(node: Node) -> void:
 		node.queue_free()
 
 
+## Forgets every pool. Call before reloading the scene: the pools are freed
+## with it, and new ones are made on demand in the new scene.
+static func clear() -> void:
+	_pools.clear()
+	_container = null
+	_host = null
+
+
+## Makes [param host] the owner of every pool from now on, forgetting any
+## pools made before. The gameplay scene calls this first thing in _ready.
+static func set_host(host: Node) -> void:
+	clear()
+	_host = host
+
+
 ## The pool for [param scene]. Use it to set [member ObjectPool.max_size] or
 ## to read counts.
 static func get_pool(scene: PackedScene) -> ObjectPool:
@@ -60,7 +77,9 @@ static func _get_container() -> Node:
 	if is_instance_valid(_container):
 		return _container
 	var tree: SceneTree = Engine.get_main_loop() as SceneTree
-	var host: Node = tree.current_scene if tree.current_scene != null else tree.root
+	var host: Node = _host
+	if not is_instance_valid(host):
+		host = tree.current_scene if tree.current_scene != null else tree.root
 	_container = Node.new()
 	_container.name = _CONTAINER_NAME
 	host.add_child(_container)

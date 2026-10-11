@@ -407,4 +407,7 @@ func _test_main_scene() -> void:
 	# they are cleared by hand. In the game they are freed with the scene.
 	main.queue_free()
 	Enemy.despawn_all()
+	# The second of two waves is the last, so the run may have ended in a
+	# victory, which pauses the game.
+	get_tree().paused = false
 	await _wait(2)

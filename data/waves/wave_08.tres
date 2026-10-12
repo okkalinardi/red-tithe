@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="WaveData" load_steps=7 format=3 uid="uid://ccb5apnik06v6"]
+
+[ext_resource type="Script" uid="uid://cftdxntmseuua" path="res://scripts/resources/wave_data.gd" id="1_wave"]
+[ext_resource type="Script" uid="uid://dfbo46uvp3tob" path="res://scripts/resources/wave_spawn_entry.gd" id="2_entry"]
+[ext_resource type="Resource" uid="uid://m2xavikjsr5y" path="res://data/enemies/gutter_rat.tres" id="3_rat"]
+[ext_resource type="Resource" uid="uid://b6wle3jeodnje" path="res://data/enemies/stray.tres" id="4_stray"]
+
+[sub_resource type="Resource" id="Resource_rat"]
+script = ExtResource("2_entry")
+enemy = ExtResource("3_rat")
+weight = 2.0
+
+[sub_resource type="Resource" id="Resource_stray"]
+script = ExtResource("2_entry")
+enemy = ExtResource("4_stray")
+weight = 1.0
+
+[resource]
+script = ExtResource("1_wave")
+duration = 30.0
+entries = Array[ExtResource("2_entry")]([SubResource("Resource_rat"), SubResource("Resource_stray")])
+spawn_interval = 0.8
+batch_size = 4
+max_alive = 100
+hp_multiplier = 2.3
+damage_multiplier = 1.5

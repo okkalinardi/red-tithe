@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy.tscn" id="1_enemy"]
+[ext_resource type="Script" path="res://scenes/enemies/state_enemy.gd" id="2_state_enemy"]
+[ext_resource type="Script" path="res://scripts/systems/state_machine.gd" id="3_machine"]
+[ext_resource type="Script" path="res://scenes/enemies/states/charger_approach_state.gd" id="4_approach"]
+[ext_resource type="Script" path="res://scenes/enemies/states/charger_telegraph_state.gd" id="5_telegraph"]
+[ext_resource type="Script" path="res://scenes/enemies/states/charger_charge_state.gd" id="6_charge"]
+[ext_resource type="Script" path="res://scenes/enemies/states/charger_recover_state.gd" id="7_recover"]
+
+[node name="ChargerEnemy" instance=ExtResource("1_enemy")]
+script = ExtResource("2_state_enemy")
+
+[node name="StateMachine" type="Node" parent="." index="5" node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_machine")
+initial_state = NodePath("Approach")
+
+[node name="Approach" type="Node" parent="StateMachine" node_paths=PackedStringArray("in_range_state")]
+script = ExtResource("4_approach")
+in_range_state = NodePath("../Telegraph")
+animation = &"approach"
+
+[node name="Telegraph" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("5_telegraph")
+next_state = NodePath("../Charge")
+animation = &"telegraph"
+
+[node name="Charge" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("6_charge")
+next_state = NodePath("../Recover")
+animation = &"charge"
+
+[node name="Recover" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("7_recover")
+next_state = NodePath("../Approach")
+animation = &"idle"

@@ -20,6 +20,7 @@ var is_running: bool = false
 
 func _ready() -> void:
 	set_process(false)
+	Events.enemy_died.connect(_on_enemy_died)
 
 
 func _process(delta: float) -> void:
@@ -40,6 +41,11 @@ func start_run() -> void:
 func end_run() -> void:
 	is_running = false
 	set_process(false)
+
+
+func set_wave(number: int) -> void:
+	wave = clampi(number, 0, TOTAL_WAVES)
+	wave_changed.emit(wave)
 
 
 func advance_wave() -> void:
@@ -63,3 +69,7 @@ func spend_gold(amount: int) -> bool:
 	gold -= amount
 	gold_changed.emit(gold)
 	return true
+
+
+func _on_enemy_died(_data: EnemyData, _position: Vector2) -> void:
+	kills += 1

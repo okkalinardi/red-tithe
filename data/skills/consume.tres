@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/skill_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"consume"
+display_name = "Consume"
+description = "Instantly kill the nearest enemy within reach and heal. Does not work on the Rat King."
+input_action = &"skill_1"
+hp_cost = 5.0
+cooldown = 8.0
+base_value = 10.0
+reach = 32.0

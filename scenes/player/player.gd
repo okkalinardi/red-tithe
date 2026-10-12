@@ -24,6 +24,7 @@ var facing: Facing = Facing.DOWN
 
 @onready var health: HealthComponent = $Health
 @onready var weapons: WeaponHolder = $Weapons
+@onready var skills: SkillHolder = $Skills
 @onready var progression: ProgressionComponent = $Progression
 @onready var collector: PickupCollector = $PickupCollector
 @onready var _sprite: AnimatedSprite2D = $Sprite
@@ -40,6 +41,7 @@ func _ready() -> void:
 	health.died.connect(_on_died)
 	weapons.setup(stats)
 	progression.setup(stats)
+	skills.setup(self)
 	collector.collected.connect(_on_pickup_collected)
 	_update_animation()
 
@@ -94,6 +96,7 @@ func _on_died() -> void:
 	set_physics_process(false)
 	set_process(false)
 	weapons.firing_enabled = false
+	skills.casting_enabled = false
 	collector.disable()
 	_sprite.play(&"dead")
 	Events.player_died.emit()

@@ -1,11 +1,14 @@
 class_name Hud
 extends CanvasLayer
-## The in-game HUD: HP bar, XP bar and level, wave counter, wave timer, gold.
+## The in-game HUD: HP bar, XP bar and level, wave counter, wave timer, gold,
+## and one [SkillSlot] per player skill.
 ##
 ## It never polls. Every value arrives through a signal from the system that
 ## owns it, and [method setup] reads the starting values once. Styling lives
 ## in hud_theme.tres and the bar fill colours in hud.tscn, so UI art can be
 ## swapped in without touching this script.
+
+const _SKILL_SLOT_SCENE: PackedScene = preload("res://scenes/ui/skill_slot.tscn")
 
 ## Shown in place of the timer between waves.
 @export var between_waves_text: String = "-"
@@ -22,6 +25,7 @@ var _spawner: WaveSpawner
 @onready var _wave_label: Label = %WaveLabel
 @onready var _timer_label: Label = %TimerLabel
 @onready var _gold_label: Label = %GoldLabel
+@onready var _skill_bar: HBoxContainer = %SkillBar
 
 
 func setup(player: Player, spawner: WaveSpawner) -> void:
@@ -34,6 +38,8 @@ func setup(player: Player, spawner: WaveSpawner) -> void:
 	spawner.wave_started.connect(_on_wave_started)
 	spawner.wave_ended.connect(_on_wave_ended)
 	spawner.time_left_changed.connect(_on_time_left_changed)
+
+	_build_skill_slots(player)
 
 	_on_health_changed(player.health.current_hp, player.health.max_hp)
 	_on_xp_changed(player.progression.xp, player.progression.get_xp_required())
@@ -83,3 +89,14 @@ func _on_time_left_changed(seconds: int) -> void:
 
 func _show_wave(number: int) -> void:
 	_wave_label.text = "WAVE %d/%d" % [maxi(number, 1), _spawner.get_wave_count()]
+
+
+func _build_skill_slots(player: Player) -> void:
+	for child: Node in _skill_bar.get_children():
+		child.queue_free()
+	for slot: int in player.skills.get_slot_count():
+		if player.skills.get_skill_data(slot) == null:
+			continue
+		var skill_slot: SkillSlot = _SKILL_SLOT_SCENE.instantiate() as SkillSlot
+		_skill_bar.add_child(skill_slot)
+		skill_slot.setup(player.skills, slot, player.health)

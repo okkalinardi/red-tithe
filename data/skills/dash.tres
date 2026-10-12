@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/skill_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"dash"
+display_name = "Dash"
+description = "Dash a short distance. Not invincible while dashing. Distance scales with AGI."
+input_action = &"skill_3"
+hp_cost = 8.0
+cooldown = 2.0
+base_value = 48.0

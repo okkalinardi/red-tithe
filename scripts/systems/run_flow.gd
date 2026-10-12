@@ -68,6 +68,7 @@ func restart() -> void:
 	get_tree().paused = false
 	Enemy.active.clear()
 	Pickup.active.clear()
+	Projectile.active.clear()
 	Pools.clear()
 	get_tree().reload_current_scene()
 

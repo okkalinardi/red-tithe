@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy.tscn" id="1_enemy"]
+[ext_resource type="Script" path="res://scenes/enemies/shooter_enemy.gd" id="2_shooter"]
+[ext_resource type="Script" path="res://scripts/systems/state_machine.gd" id="3_machine"]
+[ext_resource type="Script" path="res://scenes/enemies/states/shooter_reposition_state.gd" id="4_reposition"]
+[ext_resource type="Script" path="res://scenes/enemies/states/shooter_aim_state.gd" id="5_aim"]
+[ext_resource type="Script" path="res://scenes/enemies/states/shooter_shoot_state.gd" id="6_shoot"]
+
+[node name="ShooterEnemy" instance=ExtResource("1_enemy")]
+script = ExtResource("2_shooter")
+
+[node name="StateMachine" type="Node" parent="." index="5" node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_machine")
+initial_state = NodePath("Reposition")
+
+[node name="Reposition" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_state")]
+script = ExtResource("4_reposition")
+attack_state = NodePath("../Aim")
+
+[node name="Aim" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("5_aim")
+next_state = NodePath("../Shoot")
+
+[node name="Shoot" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("6_shoot")
+next_state = NodePath("../Reposition")

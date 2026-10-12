@@ -9,6 +9,12 @@ extends Area2D
 ##
 ## Leave Monitorable on in the scene. Godot treats a non-monitorable area as
 ## static, and a static area never detects walls.
+##
+## [method despawn_all] clears every projectile in flight, the player's and
+## the enemies', for example when a wave ends.
+
+## Every projectile currently in flight. Read-only for other scripts.
+static var active: Array[Projectile] = []
 
 var _direction: Vector2 = Vector2.RIGHT
 var _speed: float = 0.0
@@ -19,9 +25,21 @@ var _already_hit: Array[HurtboxComponent] = []
 var _is_finished: bool = true
 
 
+## Returns every projectile in flight to its pool.
+static func despawn_all() -> void:
+	for projectile: Projectile in active.duplicate():
+		projectile._finish()
+
+
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 	body_entered.connect(_on_body_entered)
+
+
+func _exit_tree() -> void:
+	# The scene is closing; make sure the shared list does not keep us.
+	active.erase(self)
+	_is_finished = true
 
 
 ## Starts a flight. [param on_hit] is called with the [HurtboxComponent] hit.
@@ -41,6 +59,8 @@ func launch(
 	_pierce_left = pierce
 	_on_hit = on_hit
 	_already_hit.clear()
+	if _is_finished:
+		active.append(self)
 	_is_finished = false
 
 
@@ -79,4 +99,5 @@ func _finish() -> void:
 	if _is_finished:
 		return
 	_is_finished = true
+	active.erase(self)
 	Pools.release(self)

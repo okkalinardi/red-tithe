@@ -1,0 +1,389 @@
+[gd_resource type="Resource" script_class="ShooterEnemyData" load_steps=46 format=3 uid="uid://u6b2cdbt4k2f"]
+
+[ext_resource type="Script" uid="uid://dg08takbjkagd" path="res://scripts/resources/shooter_enemy_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/shooter_enemy.tscn" id="2_scene"]
+[ext_resource type="Texture2D" uid="uid://w734uft8jqf1" path="res://assets/sprites/carrion crow/Carrion Crow.png" id="3_sheet"]
+[ext_resource type="PackedScene" path="res://scenes/projectiles/blood_shard.tscn" id="4_shard"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7c0"]
+atlas = ExtResource("3_sheet")
+region = Rect2(0, 280, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7c1"]
+atlas = ExtResource("3_sheet")
+region = Rect2(40, 280, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4c0"]
+atlas = ExtResource("3_sheet")
+region = Rect2(0, 160, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4c1"]
+atlas = ExtResource("3_sheet")
+region = Rect2(40, 160, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5c0"]
+atlas = ExtResource("3_sheet")
+region = Rect2(0, 200, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5c1"]
+atlas = ExtResource("3_sheet")
+region = Rect2(40, 200, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r6c0"]
+atlas = ExtResource("3_sheet")
+region = Rect2(0, 240, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r6c1"]
+atlas = ExtResource("3_sheet")
+region = Rect2(40, 240, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7c2"]
+atlas = ExtResource("3_sheet")
+region = Rect2(80, 280, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7c3"]
+atlas = ExtResource("3_sheet")
+region = Rect2(120, 280, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7c4"]
+atlas = ExtResource("3_sheet")
+region = Rect2(160, 280, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4c2"]
+atlas = ExtResource("3_sheet")
+region = Rect2(80, 160, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4c3"]
+atlas = ExtResource("3_sheet")
+region = Rect2(120, 160, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4c4"]
+atlas = ExtResource("3_sheet")
+region = Rect2(160, 160, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5c2"]
+atlas = ExtResource("3_sheet")
+region = Rect2(80, 200, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5c3"]
+atlas = ExtResource("3_sheet")
+region = Rect2(120, 200, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5c4"]
+atlas = ExtResource("3_sheet")
+region = Rect2(160, 200, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r6c2"]
+atlas = ExtResource("3_sheet")
+region = Rect2(80, 240, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r6c3"]
+atlas = ExtResource("3_sheet")
+region = Rect2(120, 240, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r6c4"]
+atlas = ExtResource("3_sheet")
+region = Rect2(160, 240, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3c0"]
+atlas = ExtResource("3_sheet")
+region = Rect2(0, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3c1"]
+atlas = ExtResource("3_sheet")
+region = Rect2(40, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3c2"]
+atlas = ExtResource("3_sheet")
+region = Rect2(80, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3c3"]
+atlas = ExtResource("3_sheet")
+region = Rect2(120, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3c4"]
+atlas = ExtResource("3_sheet")
+region = Rect2(160, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0c0"]
+atlas = ExtResource("3_sheet")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0c1"]
+atlas = ExtResource("3_sheet")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0c2"]
+atlas = ExtResource("3_sheet")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0c3"]
+atlas = ExtResource("3_sheet")
+region = Rect2(120, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0c4"]
+atlas = ExtResource("3_sheet")
+region = Rect2(160, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1c0"]
+atlas = ExtResource("3_sheet")
+region = Rect2(0, 40, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1c1"]
+atlas = ExtResource("3_sheet")
+region = Rect2(40, 40, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1c2"]
+atlas = ExtResource("3_sheet")
+region = Rect2(80, 40, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1c3"]
+atlas = ExtResource("3_sheet")
+region = Rect2(120, 40, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1c4"]
+atlas = ExtResource("3_sheet")
+region = Rect2(160, 40, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2c0"]
+atlas = ExtResource("3_sheet")
+region = Rect2(0, 80, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2c1"]
+atlas = ExtResource("3_sheet")
+region = Rect2(40, 80, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2c2"]
+atlas = ExtResource("3_sheet")
+region = Rect2(80, 80, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2c3"]
+atlas = ExtResource("3_sheet")
+region = Rect2(120, 80, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2c4"]
+atlas = ExtResource("3_sheet")
+region = Rect2(160, 80, 40, 40)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_crow"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7c0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7c1")
+}],
+"loop": false,
+"name": &"aim_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4c0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4c1")
+}],
+"loop": false,
+"name": &"aim_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r5c0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r5c1")
+}],
+"loop": false,
+"name": &"aim_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r6c0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r6c1")
+}],
+"loop": false,
+"name": &"aim_up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7c2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7c3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7c4")
+}],
+"loop": false,
+"name": &"attack_down",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4c2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4c3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4c4")
+}],
+"loop": false,
+"name": &"attack_left",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r5c2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r5c3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r5c4")
+}],
+"loop": false,
+"name": &"attack_right",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r6c2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r6c3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r6c4")
+}],
+"loop": false,
+"name": &"attack_up",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3c0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3c1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3c2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3c3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3c4")
+}],
+"loop": true,
+"name": &"fly_down",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0c0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0c1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0c2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0c3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0c4")
+}],
+"loop": true,
+"name": &"fly_left",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r1c0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r1c1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r1c2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r1c3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r1c4")
+}],
+"loop": true,
+"name": &"fly_right",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2c0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2c1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2c2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2c3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2c4")
+}],
+"loop": true,
+"name": &"fly_up",
+"speed": 10.0
+}]
+
+[resource]
+script = ExtResource("1_data")
+min_distance = 70.0
+max_distance = 120.0
+orbit_speed_ratio = 0.5
+fire_range = 160.0
+fire_interval = 2.4
+fire_interval_variance = 0.15
+first_shot_delay = Vector2(1, 2)
+aim_time = 0.45
+aim_tint = Color(1, 0.55, 0.55, 1)
+recover_time = 0.35
+projectile_scene = ExtResource("4_shard")
+projectile_damage = 8.0
+projectile_speed = 100.0
+projectile_range = 240.0
+projectiles_per_shot = 1
+spread_degrees = 0.0
+muzzle_offset = Vector2(0, -4)
+projectile_pool_prewarm = 32
+id = &"carrion_crow"
+display_name = "Carrion Crow"
+scene = ExtResource("2_scene")
+max_hp = 16
+move_speed = 55.0
+contact_damage = 4.0
+contact_interval = 0.5
+xp_reward = 2
+gold_reward = 2
+body_radius = 4.0
+hurtbox_radius = 7.0
+contact_radius = 5.0
+separation_radius = 16.0
+separation_strength = 1.0
+stop_distance = 4.0
+sprite_frames = SubResource("SpriteFrames_crow")
+visual_scale = 0.5
+sprite_offset = Vector2(0, -6)
+sprite_faces_left = false

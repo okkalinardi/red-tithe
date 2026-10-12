@@ -31,7 +31,7 @@ const _ARENA_ATTEMPTS: int = 24
 @export var waves: Array[WaveData] = []
 ## Most enemies alive at once. Cannot exceed [constant HARD_CAP].
 @export_range(1, 100) var max_alive: int = HARD_CAP
-## Remove the enemies still alive when a wave ends.
+## Remove the enemies and projectiles still alive when a wave ends.
 @export var clear_enemies_on_wave_end: bool = true
 
 @export_group("Spawn area (pixels)")
@@ -256,6 +256,7 @@ func _end_wave() -> void:
 	_is_active = false
 	if clear_enemies_on_wave_end:
 		Enemy.despawn_all()
+		Projectile.despawn_all()
 	wave_ended.emit(number)
 	Events.wave_completed.emit(number)
 	if number >= waves.size():

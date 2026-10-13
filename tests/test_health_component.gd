@@ -245,7 +245,8 @@ func _test_player_wiring() -> void:
 		await get_tree().physics_frame
 	_check("player flash ended", float(sprite.material == null), 1.0)
 	_check("player i-frames ended", float(player.health.is_invincible()), 0.0)
-	player.health.take_damage(9999.0)
+	# kill() rather than a big hit: a learned Berserk would survive the hit.
+	player.health.kill()
 	await get_tree().physics_frame
 	await get_tree().process_frame
 	_check("player_died event emitted once", _player_died_count, 1)

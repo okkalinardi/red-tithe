@@ -21,6 +21,11 @@ var stats: StatBlock
 var aim_direction: Vector2 = Vector2.RIGHT
 ## The one of four directions the sprite is drawn in.
 var facing: Facing = Facing.DOWN
+## Unit vector of the movement keys held, or zero when none are.
+var move_direction: Vector2 = Vector2.ZERO
+
+var _dash_velocity: Vector2 = Vector2.ZERO
+var _dash_time_left: float = 0.0
 
 @onready var health: HealthComponent = $Health
 @onready var weapons: WeaponHolder = $Weapons
@@ -46,16 +51,44 @@ func _ready() -> void:
 	_update_animation()
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	# get_vector normalises diagonals, so moving diagonally is not faster.
 	var input: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
-	velocity = input * stats.move_speed
+	move_direction = input.normalized() if not input.is_zero_approx() else Vector2.ZERO
+	if _dash_time_left > 0.0:
+		# A dash overrides the keys. Walls still stop it.
+		var step: float = minf(delta, _dash_time_left)
+		_dash_time_left -= delta
+		velocity = _dash_velocity * (step / delta)
+	else:
+		velocity = input * stats.move_speed
 	move_and_slide()
 
 
 func _process(_delta: float) -> void:
 	aim_at(get_global_mouse_position())
 	_update_animation()
+
+
+## Moves [param distance] pixels along [param direction] over [param duration]
+## seconds, ignoring the movement keys. Walls stop it like normal movement.
+## There is no invincibility.
+func dash(direction: Vector2, distance: float, duration: float) -> void:
+	if direction.is_zero_approx() or distance <= 0.0:
+		return
+	var time: float = maxf(duration, 0.001)
+	_dash_velocity = direction.normalized() * distance / time
+	_dash_time_left = time
+
+
+func is_dashing() -> bool:
+	return _dash_time_left > 0.0
+
+
+## Tints the sprite, for example while Berserk lasts. [constant Color.WHITE]
+## removes the tint.
+func set_tint(color: Color) -> void:
+	_sprite.modulate = color
 
 
 ## Points the player at a position in world space.
@@ -93,6 +126,7 @@ func _update_animation() -> void:
 
 func _on_died() -> void:
 	velocity = Vector2.ZERO
+	_dash_time_left = 0.0
 	set_physics_process(false)
 	set_process(false)
 	weapons.firing_enabled = false

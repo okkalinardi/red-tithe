@@ -244,7 +244,8 @@ func _test_player_wiring() -> void:
 		await get_tree().physics_frame
 	_check("player weapon fires by itself", float(_attack_count >= 4), 1.0)
 	_check("it fires along the player's aim", float(_last_direction.dot(player.aim_direction) > 0.99), 1.0)
-	player.health.take_damage(99999.0)
+	# kill() rather than a big hit: a learned Berserk would survive the hit.
+	player.health.kill()
 	await get_tree().physics_frame
 	_attack_count = 0
 	for i: int in 30:

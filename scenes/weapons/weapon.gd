@@ -60,11 +60,11 @@ func get_range() -> float:
 	return data.base_range * _stats.range_multiplier
 
 
-## Damage of a non-critical hit, after tier and stats.
+## Damage of a non-critical hit, after tier, stats and temporary buffs.
 func get_damage() -> float:
 	return data.get_damage(tier) * _stats.weapon_damage_multiplier(
 		data.strength_weight, data.dexterity_weight
-	)
+	) * _stats.damage_buff_multiplier
 
 
 ## Rolls the damage for one hit, including the crit roll. Call once per

@@ -64,6 +64,11 @@ var crit_chance: float
 var crit_damage_multiplier: float
 var magic_damage_multiplier: float
 
+## Temporary multiplier on all damage dealt, weapons and skills (Berserk sets
+## it to 2). Not a stat: it is never saved, never shown on the level-up
+## screen, and not touched by [method recalculate].
+var damage_buff_multiplier: float = 1.0
+
 
 func _init() -> void:
 	recalculate()

@@ -28,9 +28,10 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 
-## Damage of one hit at the current level and stats, before crit.
+## Damage of one hit at the current level, stats and buffs, before crit.
 func get_damage() -> float:
-	return data.get_value(level) * caster.stats.magic_damage_multiplier
+	var stats: StatBlock = caster.stats
+	return data.get_value(level) * stats.magic_damage_multiplier * stats.damage_buff_multiplier
 
 
 ## Every enemy a cast would hit now.

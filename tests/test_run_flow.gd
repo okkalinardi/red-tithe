@@ -157,7 +157,8 @@ func _test_death_and_restart() -> void:
 	var panel: GameOverPanel = main.get_node("GameOverPanel") as GameOverPanel
 	_run_ended.clear()
 	await _wait(30)
-	player.health.take_damage(99999.0)
+	# kill() rather than a big hit: a learned Berserk would survive the hit.
+	player.health.kill()
 	_check("death switches to DEAD", flow.phase, RunFlow.Phase.DEAD)
 	_check("spawning stops", float(spawner.is_wave_active()), 0.0)
 	_check("RunState stopped", float(RunState.is_running), 0.0)

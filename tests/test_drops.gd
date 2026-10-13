@@ -356,7 +356,8 @@ func _test_player_wiring() -> void:
 	_check("a spent point reaches the player's stats", player.stats.vitality, 1)
 	_check("and the player's health", player.health.max_hp, 106)
 
-	player.health.take_damage(99999.0)
+	# kill() rather than a big hit: a learned Berserk would survive the hit.
+	player.health.kill()
 	await _wait(3)
 	Pickup.spawn(_XP_GEM, player.position + Vector2(10, 0), 50)
 	await _wait(45)

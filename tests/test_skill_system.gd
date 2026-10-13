@@ -347,6 +347,9 @@ func _test_hud(player: Player) -> void:
 func _test_death(player: Player) -> void:
 	var skills: SkillHolder = player.skills
 	player.health.process_mode = Node.PROCESS_MODE_INHERIT
+	# Berserk would save this hit; use it up first.
+	skills.reset_cooldown(BERSERK)
+	skills.trigger(BERSERK)
 	player.health.take_damage(9999.0)
 	_check("a dead player cannot cast", skills.try_cast(DASH), SkillHolder.CastResult.DISABLED)
 	_check("death switches casting off", float(skills.casting_enabled), 0.0)

@@ -21,6 +21,9 @@ extends Resource
 ## Seconds before the same target can be touched again.
 @export var contact_interval: float = 0.5
 
+## A boss is immune to instant kills such as Consume.
+@export var is_boss: bool = false
+
 @export_group("Rewards")
 @export var xp_reward: int = 1
 @export var gold_reward: int = 1

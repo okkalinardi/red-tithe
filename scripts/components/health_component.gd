@@ -120,6 +120,19 @@ func take_damage(raw_damage: float) -> int:
 	return dealt
 
 
+## Kills outright, ignoring HP, defense, invincibility and
+## [member lethal_hit_handler]. For instant-kill effects such as Consume.
+## Returns false if already dead.
+func kill() -> bool:
+	if _is_dead:
+		return false
+	_set_hp(0.0)
+	_is_dead = true
+	_update_processing()
+	died.emit()
+	return true
+
+
 ## True if [method spend_hp] would succeed for [param cost].
 func can_spend(cost: float) -> bool:
 	return not _is_dead and (cost <= 0.0 or current_hp - cost >= _MIN_HP_AFTER_SPEND)

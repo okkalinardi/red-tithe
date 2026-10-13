@@ -375,6 +375,7 @@ max_hp = 16
 move_speed = 55.0
 contact_damage = 4.0
 contact_interval = 0.5
+is_boss = false
 xp_reward = 2
 gold_reward = 2
 body_radius = 4.0

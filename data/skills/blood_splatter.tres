@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/skill_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/skills/blood_splatter_skill.tscn" id="2_scene"]
 
 [resource]
 script = ExtResource("1_data")
 id = &"blood_splatter"
+skill_scene = ExtResource("2_scene")
 display_name = "Blood Splatter"
 description = "Damage every enemy around you. Scales with INT."
 input_action = &"skill_2"

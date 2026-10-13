@@ -21,6 +21,7 @@ func _ready() -> void:
 	_test_spend_hp()
 	_test_death()
 	_test_lethal_hit_handler()
+	_test_kill()
 	_test_hit_flash()
 	await _test_player_wiring()
 	print("HealthComponent tests: %d checks, %d failed" % [_checks, _failures])
@@ -191,6 +192,19 @@ func _test_lethal_hit_handler() -> void:
 	_advance(h, 0.6)
 	h.take_damage(999.0)
 	_check("dies when the handler refuses", _died_count, 1)
+
+
+func _test_kill() -> void:
+	var h: HealthComponent = _new_health()
+	h.invincibility_time = 0.5
+	h.take_damage(10.0)
+	h.lethal_hit_handler = func() -> bool: return true
+	_check("kill works during i-frames and past the lethal hook", float(h.kill()), 1.0)
+	_check("killed: hp is 0", h.current_hp, 0.0)
+	_check("killed: died emitted once", _died_count, 1)
+	_check("killed: not alive", float(h.is_alive()), 0.0)
+	_check("killing the dead does nothing", float(h.kill()), 0.0)
+	_check("died not emitted again", _died_count, 1)
 
 
 func _test_hit_flash() -> void:

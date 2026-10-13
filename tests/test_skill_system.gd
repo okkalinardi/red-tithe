@@ -21,6 +21,7 @@ var _checks: int = 0
 var _refusals: Array[int] = []
 var _casts: Array[int] = []
 var _ended: Array[int] = []
+var _scene_unlocks_all: bool = false
 
 
 func _ready() -> void:
@@ -41,6 +42,10 @@ func _ready() -> void:
 func _new_player() -> Player:
 	var player: Player = _PLAYER_SCENE.instantiate() as Player
 	player.position = Vector2(5000, 5000)
+	# Remember how the scene is saved, then test from locked skills anyway.
+	var holder: SkillHolder = player.get_node("Skills") as SkillHolder
+	_scene_unlocks_all = holder.unlock_all_on_start
+	holder.unlock_all_on_start = false
 	add_child(player)
 	await get_tree().physics_frame
 	player.weapons.firing_enabled = false
@@ -106,7 +111,7 @@ func _test_unlocking(player: Player) -> void:
 	var skills: SkillHolder = player.skills
 	_check("the player has 4 skill slots", skills.get_slot_count(), 4)
 	_check("slots are in GDD order", float(skills.get_skill_data(0) == _CONSUME and skills.get_skill_data(3) == _BERSERK), 1.0)
-	_check("the shipped player does not unlock everything", float(skills.unlock_all_on_start), 0.0)
+	_check("the shipped player does not unlock everything (untick Player/Skills unlock_all_on_start)", float(_scene_unlocks_all), 0.0)
 	for slot: int in 4:
 		_check("slot %d starts locked" % slot, skills.get_level(slot), 0)
 	_refusals.clear()
@@ -212,18 +217,20 @@ func _test_hotkeys(player: Player) -> void:
 	release.pressed = false
 	skills._unhandled_input(release)
 	_check("releasing a button does not cast", _casts.size(), 0)
+	_refusals.clear()
 	skills._unhandled_input(_mouse(MOUSE_BUTTON_LEFT))
+	_check("left mouse tries Consume (refused: nothing in reach)", float(_same(_refusals, [SkillHolder.CastResult.NO_TARGET])), 1.0)
 	skills._unhandled_input(_key(KEY_SHIFT, false))
-	_check("left mouse and left Shift cast Consume and Dash", float(_same(_casts, [CONSUME, DASH])), 1.0)
+	_check("left Shift casts Dash", float(_same(_casts, [DASH])), 1.0)
 	var right_shift := _key(KEY_SHIFT, false)
 	right_shift.location = KEY_LOCATION_RIGHT
 	skills._unhandled_input(right_shift)
-	_check("right Shift does not dash", float(_same(_casts, [CONSUME, DASH])), 1.0)
+	_check("right Shift does not dash", float(_same(_casts, [DASH])), 1.0)
 	var walk_while_dashing := _key(KEY_W, false)
 	walk_while_dashing.shift_pressed = true
 	_check("holding Shift does not block walking", float(walk_while_dashing.is_action_pressed(&"move_up")), 1.0)
 	skills._unhandled_input(_key(KEY_F, false))
-	_check("no key casts Berserk", float(_same(_casts, [CONSUME, DASH])), 1.0)
+	_check("no key casts Berserk", float(_same(_casts, [DASH])), 1.0)
 	for slot: int in 4:
 		skills.reset_cooldown(slot)
 	_set_hp(player, 100.0)

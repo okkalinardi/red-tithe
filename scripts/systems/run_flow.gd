@@ -11,7 +11,7 @@ extends Node
 ## DEAD / VICTORY --restart--> the scene is reloaded, a new run starts
 ## [/codeblock]
 ## The break between waves: wait for the last drops to reach the player,
-## open the level-up screen if there are stat points to spend, then a short
+## open the level-up screen if there are stat or skill points to spend, then a short
 ## pause before the next wave.
 
 signal phase_changed(phase: Phase)
@@ -90,7 +90,7 @@ func _on_wave_ended(number: int) -> void:
 	if number >= _spawner.get_wave_count():
 		_finish(true)
 		return
-	if _player.progression.stat_points > 0:
+	if LevelUpScreen.has_points_to_spend(_player):
 		_level_up_screen.open(_player)
 		await _level_up_screen.closed
 	await _wait(intermission)

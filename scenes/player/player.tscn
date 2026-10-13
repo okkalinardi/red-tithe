@@ -271,4 +271,3 @@ script = ExtResource("12_collector")
 [node name="Skills" type="Node2D" parent="."]
 script = ExtResource("13_skills")
 skills = Array[ExtResource("14_skill_data")]([ExtResource("15_consume"), ExtResource("16_blood_splatter"), ExtResource("17_dash"), ExtResource("18_berserk")])
-unlock_all_on_start = true

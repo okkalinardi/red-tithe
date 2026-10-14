@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ShopConfig" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/shop_config.gd" id="1_config"]
+[ext_resource type="Script" path="res://scripts/resources/weapon_data.gd" id="4_weapon_data"]
+[ext_resource type="Resource" path="res://data/weapons/sword.tres" id="2_sword"]
+[ext_resource type="Resource" path="res://data/weapons/bow.tres" id="3_bow"]
+
+[resource]
+script = ExtResource("1_config")
+weapons = Array[ExtResource("4_weapon_data")]([ExtResource("2_sword"), ExtResource("3_bow")])
+offer_count = 4
+tier_cap_above_wave = 1
+tier_window = 3
+price_multiplier = 1.0
+reroll_base_cost = 2
+reroll_cost_per_wave = 1
+reroll_cost_increase = 2

@@ -23,6 +23,9 @@ var aim_direction: Vector2 = Vector2.RIGHT
 var facing: Facing = Facing.DOWN
 ## Unit vector of the movement keys held, or zero when none are.
 var move_direction: Vector2 = Vector2.ZERO
+## False while a menu such as the shop is open: no moving, aiming, firing
+## or casting. Health keeps regenerating.
+var controls_enabled: bool = true
 
 var _dash_velocity: Vector2 = Vector2.ZERO
 var _dash_time_left: float = 0.0
@@ -53,7 +56,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	# get_vector normalises diagonals, so moving diagonally is not faster.
-	var input: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	var input: Vector2 = Vector2.ZERO
+	if controls_enabled:
+		input = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 	move_direction = input.normalized() if not input.is_zero_approx() else Vector2.ZERO
 	if _dash_time_left > 0.0:
 		# A dash overrides the keys. Walls still stop it.
@@ -66,8 +71,19 @@ func _physics_process(delta: float) -> void:
 
 
 func _process(_delta: float) -> void:
-	aim_at(get_global_mouse_position())
+	if controls_enabled:
+		aim_at(get_global_mouse_position())
 	_update_animation()
+
+
+## Switches moving, aiming, firing and casting on or off, for menus that do
+## not pause the game. Has no effect on a dead player.
+func set_controls_enabled(enabled: bool) -> void:
+	if not health.is_alive():
+		return
+	controls_enabled = enabled
+	weapons.firing_enabled = enabled
+	skills.casting_enabled = enabled
 
 
 ## Moves [param distance] pixels along [param direction] over [param duration]

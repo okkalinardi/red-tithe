@@ -40,21 +40,35 @@ func setup(stats: StatBlock) -> void:
 		add_weapon(weapon_data)
 
 
-## The shop rule: a duplicate upgrades the held weapon by one tier; a new
-## weapon goes into a free slot. Returns false if nothing changed (both
-## slots taken by other weapons, or the held weapon is at the maximum tier).
-func add_weapon(weapon_data: WeaponData) -> bool:
+## The shop rule. A duplicate raises the held weapon to its tier + 1 or to
+## [param tier], whichever is higher; a new weapon goes into a free slot at
+## [param tier]. Returns false if nothing changed (both slots taken by other
+## weapons, or the held weapon cannot go higher).
+func add_weapon(weapon_data: WeaponData, tier: int = WeaponData.MIN_TIER) -> bool:
 	var held_slot: int = find_slot(weapon_data)
 	if held_slot != -1:
-		if not _slots[held_slot].upgrade():
+		var new_tier: int = get_tier_after_duplicate(weapon_data, tier)
+		if new_tier == -1:
 			return false
+		_slots[held_slot].set_tier(new_tier)
 		weapons_changed.emit()
 		return true
 	var free_slot: int = get_free_slot()
 	if free_slot == -1:
 		return false
-	equip(free_slot, weapon_data)
+	equip(free_slot, weapon_data, tier)
 	return true
+
+
+## The tier a held [param weapon_data] would reach if a copy at [param tier]
+## were added, or -1 if it is not held or cannot go higher.
+func get_tier_after_duplicate(weapon_data: WeaponData, tier: int = WeaponData.MIN_TIER) -> int:
+	var held_slot: int = find_slot(weapon_data)
+	if held_slot == -1:
+		return -1
+	var held_tier: int = _slots[held_slot].tier
+	var new_tier: int = mini(maxi(held_tier + 1, tier), WeaponData.MAX_TIER)
+	return new_tier if new_tier > held_tier else -1
 
 
 ## Puts a weapon in [param slot], replacing whatever was there.

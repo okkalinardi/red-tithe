@@ -11,8 +11,9 @@ extends Node
 ## DEAD / VICTORY --restart--> the scene is reloaded, a new run starts
 ## [/codeblock]
 ## The break between waves: wait for the last drops to reach the player,
-## open the level-up screen if there are stat or skill points to spend, then a short
-## pause before the next wave.
+## open the level-up screen if there are stat or skill points to spend, then
+## the shop, then a short pause before the next wave. There is no shop after
+## the final wave.
 
 signal phase_changed(phase: Phase)
 
@@ -33,6 +34,7 @@ var phase: Phase = Phase.STARTING
 var _player: Player
 var _spawner: WaveSpawner
 var _level_up_screen: LevelUpScreen
+var _shop_screen: ShopScreen
 var _game_over_panel: GameOverPanel
 var _timer: Timer
 
@@ -45,10 +47,18 @@ func _ready() -> void:
 	add_child(_timer)
 
 
-func setup(player: Player, spawner: WaveSpawner, level_up_screen: LevelUpScreen, game_over_panel: GameOverPanel) -> void:
+## [param shop_screen] may be null: the break then has no shop.
+func setup(
+	player: Player,
+	spawner: WaveSpawner,
+	level_up_screen: LevelUpScreen,
+	game_over_panel: GameOverPanel,
+	shop_screen: ShopScreen = null,
+) -> void:
 	_player = player
 	_spawner = spawner
 	_level_up_screen = level_up_screen
+	_shop_screen = shop_screen
 	_game_over_panel = game_over_panel
 	spawner.wave_ended.connect(_on_wave_ended)
 	Events.player_died.connect(_on_player_died)
@@ -93,6 +103,14 @@ func _on_wave_ended(number: int) -> void:
 	if LevelUpScreen.has_points_to_spend(_player):
 		_level_up_screen.open(_player)
 		await _level_up_screen.closed
+	if phase != Phase.BETWEEN_WAVES:
+		return
+	if _shop_screen != null:
+		# Not paused, so HP keeps regenerating while the player shops.
+		_player.set_controls_enabled(false)
+		_shop_screen.open(_player, number)
+		await _shop_screen.closed
+		_player.set_controls_enabled(true)
 	await _wait(intermission)
 	if phase != Phase.BETWEEN_WAVES:
 		return

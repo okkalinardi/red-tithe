@@ -396,6 +396,14 @@ func _test_main_scene() -> void:
 	_check("wave 1 ends in the main scene", float(spawner.is_wave_active()), 0.0)
 	_check("the HUD shows the pause between waves", float(timer_label.text == "-"), 1.0)
 	_check("still on wave 1 during the pause between waves", spawner.current_wave_number, 1)
+	# The shop opens between waves; leave it so the run moves on.
+	var shop: ShopScreen = main.get_node("ShopScreen") as ShopScreen
+	for i: int in 120:
+		if shop.is_open():
+			break
+		await get_tree().physics_frame
+	_check("the shop opens between waves", float(shop.is_open()), 1.0)
+	shop.close()
 	await _wait(200)
 	_check("wave 2 starts after the pause", spawner.current_wave_number, 2)
 	await _wait(2)

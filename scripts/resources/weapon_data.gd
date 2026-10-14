@@ -16,6 +16,9 @@ const MAX_TIER: int = 10
 ## The scene that performs the attack. Its root must extend [Weapon].
 @export var weapon_scene: PackedScene
 
+## Gold for this weapon at tier 1. The shop multiplies it by the tier.
+@export_range(1, 999) var base_price: int = 15
+
 @export_group("Base values (tier 1, no stats)")
 @export var base_damage: float = 10.0
 ## Seconds between attacks.

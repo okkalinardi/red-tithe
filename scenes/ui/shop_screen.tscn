@@ -1,0 +1,132 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/shop_screen.gd" id="1_shop"]
+[ext_resource type="Theme" path="res://scenes/ui/hud_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.1, 0.06, 0.07, 0.96)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.12, 0.14, 1)
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(0.16, 0.09, 0.1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.1, 0.12, 1)
+content_margin_left = 3.0
+content_margin_top = 2.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+
+[node name="ShopScreen" type="CanvasLayer"]
+layer = 20
+visible = false
+script = ExtResource("1_shop")
+card_style = SubResource("StyleBoxFlat_card")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+
+[node name="Dim" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Center" type="CenterContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Root/Center"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Layout" type="VBoxContainer" parent="Root/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Header" type="HBoxContainer" parent="Root/Center/Panel/Layout"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Root/Center/Panel/Layout/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "SHOP"
+
+[node name="GoldLabel" type="Label" parent="Root/Center/Panel/Layout/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0 gold"
+
+[node name="HeldTitle" type="Label" parent="Root/Center/Panel/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "YOUR WEAPONS"
+horizontal_alignment = 1
+
+[node name="HeldRow" type="HBoxContainer" parent="Root/Center/Panel/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="OfferRow" type="HBoxContainer" parent="Root/Center/Panel/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="HintLabel" type="Label" parent="Root/Center/Panel/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Buying a weapon you hold upgrades it."
+horizontal_alignment = 1
+
+[node name="Footer" type="HBoxContainer" parent="Root/Center/Panel/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="RerollButton" type="Button" parent="Root/Center/Panel/Layout/Footer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 16)
+layout_mode = 2
+text = "Reroll  2g"
+
+[node name="CancelButton" type="Button" parent="Root/Center/Panel/Layout/Footer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(56, 16)
+layout_mode = 2
+text = "Cancel"
+
+[node name="ContinueButton" type="Button" parent="Root/Center/Panel/Layout/Footer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 16)
+layout_mode = 2
+text = "Next wave"

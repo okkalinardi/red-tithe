@@ -12,6 +12,7 @@ const _SPAWN_CLEARANCE: float = 10.0
 @onready var _drop_spawner: DropSpawner = $DropSpawner
 @onready var _hud: Hud = $Hud
 @onready var _level_up_screen: LevelUpScreen = $LevelUpScreen
+@onready var _shop_screen: ShopScreen = $ShopScreen
 @onready var _game_over_panel: GameOverPanel = $GameOverPanel
 @onready var _run_flow: RunFlow = $RunFlow
 
@@ -26,5 +27,5 @@ func _ready() -> void:
 	_wave_spawner.setup(_player, bounds, _arena.is_point_free.bind(_SPAWN_CLEARANCE))
 	_drop_spawner.setup(_player.collector)
 	_hud.setup(_player, _wave_spawner)
-	_run_flow.setup(_player, _wave_spawner, _level_up_screen, _game_over_panel)
+	_run_flow.setup(_player, _wave_spawner, _level_up_screen, _game_over_panel, _shop_screen)
 	_run_flow.start_run()

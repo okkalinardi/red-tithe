@@ -82,6 +82,11 @@ func can_upgrade() -> bool:
 	return tier < WeaponData.MAX_TIER
 
 
+## Sets the tier, clamped to 1-10.
+func set_tier(new_tier: int) -> void:
+	tier = clampi(new_tier, WeaponData.MIN_TIER, WeaponData.MAX_TIER)
+
+
 ## Raises the tier by one. Returns false at the maximum tier.
 func upgrade() -> bool:
 	if not can_upgrade():

@@ -278,6 +278,9 @@ func _test_between_waves() -> void:
 	await _wait(300)
 	_check("the next wave waits for the player", spawner.current_wave_number, 1)
 	(screen.get_node("%DoneButton") as Button).pressed.emit()
+	var shop: ShopScreen = main.get_node("ShopScreen") as ShopScreen
+	_check("the shop follows the level-up screen", float(shop.is_open()), 1.0)
+	shop.close()
 	await _wait(60)
 	_check("the pause between waves follows", spawner.current_wave_number, 1)
 	await _wait(150)
